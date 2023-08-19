@@ -2,7 +2,7 @@ import './styles.css';
 import ButtonInverse from "../../../components/ButtonInverse";
 import ButtonPrimary from "../../../components/ButtonPrimary";
 import ProductDetailsCard from "../../../components/ProductDetailsCard";
-import { ProductDTO } from '../../../models/products';
+import { ProductDTO } from '../../../models/product';
 
 const product: ProductDTO = {
     id: 2,

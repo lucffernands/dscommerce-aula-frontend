@@ -28,12 +28,12 @@ export function logout() {
     accessTokenRepository.remove();
 }
 
-export function saveAsToken(token: string) {
+export function saveAccessToken(token: string) {
     accessTokenRepository.save(token);
 }
 
 export function getAccessToken() {
-    accessTokenRepository.get();
+    return accessTokenRepository.get();
 }
 
 

@@ -5,6 +5,7 @@ import CatalogCard from '../../../components/CatalogCard';
 import { useEffect, useState } from 'react';
 import { ProductDTO } from '../../../models/product';
 import * as productService from '../../../services/product-service';
+import { isAuthenticated } from '../../../services/auth-service';
 
 type QueryParams = {
     page: number;
@@ -23,6 +24,8 @@ export default function Catalog() {
     });
 
     useEffect(() => {
+        console.log("AUTENTICADO", isAuthenticated());
+
         productService.findPageRequest(queryParams.page, queryParams.name)
             .then(response => {
                 const nextPage = response.data.content;
@@ -33,34 +36,34 @@ export default function Catalog() {
 
     function handleSearch(searchText: string) {
         setProducts([]);
-        setQueryParams({...queryParams, page: 0, name: searchText});
+        setQueryParams({ ...queryParams, page: 0, name: searchText });
     }
 
     function handleNextPageClick() {
-        setQueryParams({...queryParams, page: queryParams.page + 1});
+        setQueryParams({ ...queryParams, page: queryParams.page + 1 });
     }
 
     return (
-            <main>
-                <section id="catalog-section" className="dsc-container">
-                   <SearchBar onSearch={handleSearch}/>
+        <main>
+            <section id="catalog-section" className="dsc-container">
+                <SearchBar onSearch={handleSearch} />
 
-                    <div className="dsc-catalog-cards dsc-mb20 dsc-mt20">
-                        {
-                            products.map(
-                                product => <CatalogCard key={product.id} product={product} />
-                            )
-                        }
-                    </div>  
-                    
+                <div className="dsc-catalog-cards dsc-mb20 dsc-mt20">
                     {
-                        !isLastPage &&
-                        <div onClick={handleNextPageClick}>
-                            <ButtonNextPage />
-                        </div>
+                        products.map(
+                            product => <CatalogCard key={product.id} product={product} />
+                        )
                     }
-                        
-                </section>
-            </main>
+                </div>
+
+                {
+                    !isLastPage &&
+                    <div onClick={handleNextPageClick}>
+                        <ButtonNextPage />
+                    </div>
+                }
+
+            </section>
+        </main>
     );
 }

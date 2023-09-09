@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import { ProductDTO } from '../../../models/product';
 import * as productService from '../../../services/product-service';
-import * as cartService from '../../../services/cart-services';
+import * as cartService from '../../../services/cart-service';
 import { ContextCartCount } from '../../../utils/context-cart';
 
 export default function ProductDetails() {

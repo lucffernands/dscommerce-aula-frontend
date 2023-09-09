@@ -1,6 +1,6 @@
 import './styles.css';
 import { useContext, useState } from 'react';
-import * as cartService from '../../../services/cart-services';
+import * as cartService from '../../../services/cart-service';
 import { OrderDTO } from '../../../models/order';
 import { Link } from 'react-router-dom';
 import { ContextCartCount } from '../../../utils/context-cart';

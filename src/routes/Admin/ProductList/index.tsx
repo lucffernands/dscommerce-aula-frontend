@@ -4,6 +4,8 @@ import { ProductDTO } from '../../../models/product';
 import * as productService from '../../../services/product-service';
 import editIcon from '../../../assets/edit.svg';
 import deleteIcon from '../../../assets/delete.svg';
+import SearchBar from '../../../components/SearchBar';
+import ButtonNextPage from '../../../components/ButtonNextPage';
 
 type QueryParams = {
     page: number;
@@ -16,7 +18,7 @@ export default function ProductListing() {
 
     const [products, setProducts] = useState<ProductDTO[]>([]);
 
-    const [queryParams, setQueryParam] = useState<QueryParams>({
+    const [queryParams, setQueryParams] = useState<QueryParams>({
         page: 0,
         name: ""
     });
@@ -28,7 +30,16 @@ export default function ProductListing() {
                 setProducts(products.concat(nextPage));
                 setIsLastePage(response.data.last);
             })
-    }, []);
+    }, [queryParams]);
+
+    function handleSearch(searchText: string) {
+        setProducts([]);
+        setQueryParams({ ...queryParams, page: 0, name: searchText });
+    }
+
+    function handleNextPageClick() {
+        setQueryParams({ ...queryParams, page: queryParams.page + 1 });
+    }
 
     return (
         <main>
@@ -39,11 +50,7 @@ export default function ProductListing() {
                     <div className="dsc-btn dsc-btn-white">Novo</div>
                 </div>
 
-                <form className="dsc-search-bar">
-                    <button type="submit">🔎︎</button>
-                    <input type="text" placeholder="Nome do produto" />
-                    <button type="reset">🗙</button>
-                </form>
+                <SearchBar onSearch={handleSearch} />
 
                 <table className="dsc-table dsc-mb20 dsc-mt20">
                     <thead>
@@ -71,7 +78,10 @@ export default function ProductListing() {
                         }
                     </tbody>
                 </table>
-                <div className="dsc-btn-next-page">Carregar mais</div>
+                {
+                    !isLastePage &&
+                    <ButtonNextPage onNextPage={handleNextPageClick} />
+                }
             </section>
         </main>
     );

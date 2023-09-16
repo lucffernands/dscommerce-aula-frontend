@@ -1,6 +1,34 @@
 import './styles.css';
+import { useEffect, useState } from 'react';
+import { ProductDTO } from '../../../models/product';
+import * as productService from '../../../services/product-service';
+import editIcon from '../../../assets/edit.svg';
+import deleteIcon from '../../../assets/delete.svg';
+
+type QueryParams = {
+    page: number;
+    name: string;
+}
 
 export default function ProductListing() {
+
+    const [isLastePage, setIsLastePage] = useState(false);
+
+    const [products, setProducts] = useState<ProductDTO[]>([]);
+
+    const [queryParams, setQueryParam] = useState<QueryParams>({
+        page: 0,
+        name: ""
+    });
+
+    useEffect(() => {
+        productService.findPageRequest(queryParams.page, queryParams.name)
+            .then(response => {
+                const nextPage = response.data.content;
+                setProducts(products.concat(nextPage));
+                setIsLastePage(response.data.last);
+            })
+    }, []);
 
     return (
         <main>
@@ -29,29 +57,18 @@ export default function ProductListing() {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td className="dsc-tb576">341</td>
-                            <td><img className="dsc-product-listing-image" src="images/computer.png" alt="Computer" /></td>
-                            <td className="dsc-tb768">R$ 5000,00</td>
-                            <td className="dsc-txt-left">Computador Gamer XT Plus Ultra</td>
-                            <td><img className="dsc-product-listing-btn" src="images/edit.svg" alt="Editar" /></td>
-                            <td><img className="dsc-product-listing-btn" src="images/delete.svg" alt="Deletar" /></td>
-                        </tr>
-                        <tr>
-                            <td className="dsc-tb576">341</td>
-                            <td><img className="dsc-product-listing-image" src="images/computer.png" alt="Computer" /></td>
-                            <td className="dsc-tb768">R$ 5000,00</td>
-                            <td className="dsc-txt-left">Computador Gamer XT Plus Ultra</td>
-                            <td><img className="dsc-product-listing-btn" src="images/edit.svg" alt="Editar" /></td>
-                            <td><img className="dsc-product-listing-btn" src="images/delete.svg" alt="Deletar" /></td>
-                        </tr><tr>
-                            <td className="dsc-tb576">341</td>
-                            <td><img className="dsc-product-listing-image" src="images/computer.png" alt="Computer" /></td>
-                            <td className="dsc-tb768">R$ 5000,00</td>
-                            <td className="dsc-txt-left">Computador Gamer XT Plus Ultra</td>
-                            <td><img className="dsc-product-listing-btn" src="images/edit.svg" alt="Editar" /></td>
-                            <td><img className="dsc-product-listing-btn" src="images/delete.svg" alt="Deletar" /></td>
-                        </tr>
+                        {
+                            products.map(product => (
+                                <tr key={product.id}>
+                                    <td className="dsc-tb576">{product.id}</td>
+                                    <td><img className="dsc-product-listing-image" src={product.imgUrl} alt={product.name} /></td>
+                                    <td className="dsc-tb768">R$ {product.price.toFixed(2)}</td>
+                                    <td className="dsc-txt-left">{product.name}</td>
+                                    <td><img className="dsc-product-listing-btn" src={editIcon} alt={product.name} /></td>
+                                    <td><img className="dsc-product-listing-btn" src={deleteIcon} alt={product.name} /></td>
+                                </tr>
+                            ))
+                        }
                     </tbody>
                 </table>
                 <div className="dsc-btn-next-page">Carregar mais</div>

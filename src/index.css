@@ -43,8 +43,8 @@ main {
   padding: 0 20px;
 }
 
-/*-----------------------------------------------------------------*/
-/* generic styles */
+/**-----------------------------------------------------------------*/
+/** generic styles */
 
 .dsc-container {
   width: 100%;
@@ -77,8 +77,8 @@ main {
   }
 }
 
-/*-----------------------------------------------------------------*/
-/* header styles */
+/**-----------------------------------------------------------------*/
+/** header styles */
 
 header {
   height: 70px;
@@ -161,8 +161,8 @@ nav a {
   }
 }
 
-/*-----------------------------------------------------------------*/
-/* card styles */
+/**-----------------------------------------------------------------*/
+/** card styles */
 
 .dsc-card {
   border: 1px solid var(--dsc-color-card-border);
@@ -174,8 +174,8 @@ nav a {
   border-bottom: 1px solid var(--dsc-color-card-border);
 }
 
-/*-----------------------------------------------------------------*/
-/* button styles */
+/**-----------------------------------------------------------------*/
+/** button styles */
 
 .dsc-btn-page-container {
   width: 100%;
@@ -201,8 +201,8 @@ nav a {
   cursor: pointer;
 }
 
-/*-----------------------------------------------------------------*/
-/* form styles */
+/**-----------------------------------------------------------------*/
+/** form styles */
 
 .dsc-form {
   display: flex;
@@ -278,8 +278,8 @@ nav a {
   }
 }
 
-/*-----------------------------------------------------------------*/
-/* table styles */
+/***-----------------------------------------------------------------*/
+/** table styles */
 
 .dsc-table {
   width: 100%;
@@ -363,4 +363,40 @@ nav a {
   .dsc-table tbody {
     font-size: 16px;
   }
+}
+
+/**-----------------------------------------------------------------*/
+/** dialog styles */
+
+.dsc-dialog-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.dsc-dialog-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  background-color: var(--dsc-color-card-bg);
+  padding: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.dsc-dialog-box h2 {
+  font-size: 20px;
+  color: var(--dsc-color-font-primary);
+  margin-bottom: 20px;
+}
+
+.dsc-dialog-btn-container {
+  width: 100%;
 }

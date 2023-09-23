@@ -1,6 +1,53 @@
+import { Link, useParams } from 'react-router-dom';
 import './styles.css';
+import { useEffect, useState } from 'react';
+import FormInput from '../../../components/FormInput';
+import * as forms from '../../../utils/forms';
+import * as productService from '../../../services/product-service';
 
 export default function ProductForm() {
+
+    const params = useParams();
+
+    const isEiting = params.productId !== 'create';
+
+    const [formData, setFormData] = useState<any>({
+        name: {
+            value: "",
+            id: "name",
+            name: "name",
+            type: "text",
+            placeholder: "name",
+        },
+        price: {
+            value: "",
+            id: "price",
+            name: "price",
+            type: "number",
+            placeholder: "price",
+        },
+        imgUrl: {
+            value: "",
+            id: "imgUrl",
+            name: "imgUrl",
+            type: "text",
+            placeholder: "imgUrl",
+        }
+    });
+
+    useEffect(() => {
+        if (isEiting) {
+            productService.findById(Number(params.productId))
+                .then(response => {
+                    const newFormData = forms.updateAll(formData, response.data);
+                    setFormData(newFormData);
+                })
+        }
+    }, []);
+
+    function handleInputChange(event: any) {
+        setFormData(forms.update(formData, event.target.name, event.target.value));
+    }
 
     return (
         <main>
@@ -10,28 +57,32 @@ export default function ProductForm() {
                         <h2>Dados do produto</h2>
                         <div className="dsc-form-controls-container">
                             <div>
-                                <input className="dsc-form-control" type="text" placeholder="Nome" />
+                                <FormInput
+                                    {...formData.name}
+                                    className="dsc-form-control"
+                                    onChange={handleInputChange}
+                                />
                             </div>
                             <div>
-                                <input className="dsc-form-control" type="text" placeholder="Preço" />
+                                <FormInput
+                                    {...formData.price}
+                                    className="dsc-form-control"
+                                    onChange={handleInputChange}
+                                />
                             </div>
                             <div>
-                                <input className="dsc-form-control" type="text" placeholder="Imagem" />
-                            </div>
-                            <div>
-                                <select className="dsc-form-control dsc-select" required>
-                                    <option value="" disabled selected>Categorias</option>
-                                    <option value="1">Valor 1</option>
-                                    <option value="2">Valor 2</option>
-                                </select>
-                            </div>
-                            <div>
-                                <textarea className="dsc-form-control dsc-textarea" placeholder="Descrição"></textarea>
+                                <FormInput
+                                    {...formData.imgUrl}
+                                    className="dsc-form-control"
+                                    onChange={handleInputChange}
+                                />
                             </div>
                         </div>
 
                         <div className="dsc-product-form-buttons">
-                            <button type="reset" className="dsc-btn dsc-btn-white">Cancelar</button>
+                            <Link to="/admin/products">
+                                <button type="reset" className="dsc-btn dsc-btn-white">Cancelar</button>
+                            </Link>
                             <button type="submit" className="dsc-btn dsc-btn-blue">Salvar</button>
                         </div>
                     </form>

@@ -22,7 +22,7 @@ export default function HeaderClient() {
                         {
                             contextTokenPayload &&
                             authService.hasAnyRoles(['ROLE_ADMIN']) &&
-                            <Link to="/admin">
+                            <Link to="/admin/home">
                                 <div className="dsc-menu-item">
                                     <img src={AdminIcon} alt="Admin" />
                                 </div>

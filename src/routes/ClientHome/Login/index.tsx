@@ -4,6 +4,7 @@ import { CredentialsDTO } from '../../../models/auth';
 import * as authService from '../../../services/auth-service';
 import { useNavigate } from 'react-router-dom';
 import { ContextToken } from '../../../utils/context-token';
+import FormInput from '../../../components/FormInput';
 
 export function Login() {
 
@@ -11,14 +12,30 @@ export function Login() {
 
     const navigate = useNavigate();
 
-    const [formData, setFormData] = useState<CredentialsDTO>({
-        username: '',
-        password: ''
+    const [formData, setFormData] = useState<any>({
+        username: {
+            value: "",
+            id: "username",
+            name: "username",
+            type: "text",
+            placeholder: "Email",
+            validation: function (value: string) {
+                return /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(value.toLowerCase());
+            },
+            message: "Favor informar um email válido",
+        },
+        password: {
+            value: "",
+            id: "password",
+            name: "password",
+            type: "password",
+            placeholder: "Senha",
+        }
     })
 
     function handleSubmit(event: any) {
         event.preventDefault();
-        authService.loginRequest(formData)
+        authService.loginRequest({username: formData.username.value, password: formData.password.value})
             .then(response => {
                 authService.saveAccessToken(response.data.access_token);
                 setContextTokenPayload(authService.getAccessTokenPayload());
@@ -32,7 +49,7 @@ export function Login() {
     function handleInputChange(event: any) {
         const value = event.target.value;
         const name = event.target.name;
-        setFormData({...formData, [name]: value});
+        setFormData({ ...formData, [name]: { ...formData[name], value: value } });
     }
 
     return (
@@ -41,26 +58,20 @@ export function Login() {
                 <div className="dsc-login-form-container">
                     <form className="dsc-card dsc-form" onSubmit={handleSubmit}>
                         <h2>Login</h2>
-                        <div className="dsc-form-controls-container">
+                            <div className="dsc-form-controls-container">
                             <div>
-                                <input 
-                                name="username"
-                                value={formData.username}
-                                className="dsc-form-control" 
-                                type="text" 
-                                placeholder="Email" 
-                                onChange={handleInputChange}
+                                <FormInput
+                                    {...formData.username}
+                                    className="dsc-form-control"
+                                    onChange={handleInputChange}
                                 />
-                                    <div className="dsc-form-error"></div>
+                                <div className="dsc-form-error"></div>
                             </div>
                             <div>
-                                <input 
-                                name="password"
-                                value={formData.password}
-                                className="dsc-form-control" 
-                                type="password" 
-                                placeholder="Senha" 
-                                onChange={handleInputChange}
+                                <FormInput
+                                    {...formData.password}
+                                    className="dsc-form-control"
+                                    onChange={handleInputChange}
                                 />
                             </div>
                         </div>

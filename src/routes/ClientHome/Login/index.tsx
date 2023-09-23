@@ -35,6 +35,7 @@ export function Login() {
 
     function handleSubmit(event: any) {
         event.preventDefault();
+        console.log(forms.toValues(formData));
         authService.loginRequest({username: formData.username.value, password: formData.password.value})
             .then(response => {
                 authService.saveAccessToken(response.data.access_token);

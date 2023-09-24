@@ -13,7 +13,15 @@ export function toValues(inputs: any) {
 export function updateAll(inputs: any, newValues: any) {
     const newInputs: any = {};
     for (var name in inputs) {
-        newInputs[name] = { ...inputs[name], value: newValues[name] }
+        newInputs[name] = {...inputs[name], value: newValues[name]}
     }
     return newInputs;
+}
+
+export function validate(inputs: any, name: string) {
+    if (!inputs[name].validation) {
+        return inputs;
+    }
+    const isInvalid = !inputs[name].validation(inputs[name].value)
+    return {...inputs, [name]: { ...inputs[name], invalid: isInvalid.toString()}};
 }

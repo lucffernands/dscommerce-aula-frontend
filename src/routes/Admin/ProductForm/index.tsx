@@ -17,25 +17,32 @@ export default function ProductForm() {
             id: "name",
             name: "name",
             type: "text",
-            placeholder: "name",
+            placeholder: "Nome",
         },
         price: {
-            value: "",
+            value: 200,
             id: "price",
             name: "price",
             type: "number",
-            placeholder: "price",
+            placeholder: "Preço",
+            validation: function(value: any) {
+                return Number(value) > 0;
+            }
         },
         imgUrl: {
             value: "",
             id: "imgUrl",
             name: "imgUrl",
             type: "text",
-            placeholder: "imgUrl",
+            placeholder: "Imagem",
         }
     });
 
     useEffect(() => {
+
+        const obj = forms.validate(formData, "price");
+        console.log(obj);
+
         if (isEiting) {
             productService.findById(Number(params.productId))
                 .then(response => {

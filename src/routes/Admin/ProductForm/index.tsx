@@ -88,21 +88,31 @@ export default function ProductForm() {
         }
     }, []);
 
-    function handleInputChange(event: any) {
-        const dataUpdate = forms.update(formData, event.target.name, event.target.value);
-        const dataValidated = forms.validate(dataUpdate, event.target.name);
-        setFormData(dataValidated);
+    function handleInputChange(event: any) { 
+        setFormData(forms.updateAndValidate(formData, event.target.name, event.target.value));
     }
 
-    function handleInputTurnDirty(name: string) {
-        const newFormData = forms.toDirty(formData, name);
-        setFormData(newFormData);
+    function handleInputTurnDirty(name: string) {   
+        setFormData(forms.dirtyAndValidate(formData, name));
     }
+
+    function handleSubmit(event: any) {
+        event.preventDefault();
+
+        const formDataValidated = forms.dirtyAndValidateAll(formData);
+        if (forms.hasAnyInvalid(formDataValidated)) {
+            setFormData(formDataValidated);
+            return;
+        }
+    }
+
+    //console.log(forms.toValues(formData));
+
     return (
         <main>
             <section id="product-form-section" className="dsc-container">
                 <div className="dsc-product-form-container">
-                    <form className="dsc-card dsc-form">
+                    <form className="dsc-card dsc-form" onSubmit={handleSubmit}>
                         <h2>Dados do produto</h2>
                         <div className="dsc-form-controls-container">
                             <div>

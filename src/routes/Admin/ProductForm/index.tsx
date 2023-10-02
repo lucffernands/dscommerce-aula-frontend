@@ -146,6 +146,7 @@ export default function ProductForm() {
                                 <FormInput
                                     {...formData.price}
                                     className="dsc-form-control"
+                                    onTurnDirty={handleInputTurnDirty}
                                     onChange={handleInputChange}
                                 />
                                 <div className="dsc-form-error">{formData.price.message}</div>

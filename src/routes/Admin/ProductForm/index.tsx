@@ -119,6 +119,10 @@ export default function ProductForm() {
         request
             .then(() => {
                 navigate("/admin/products");
+            })
+            .catch(error => {
+                const newInputs = forms.setBackendErrors(formData, error.response.data.errors);
+                setFormData(newInputs);
             });
     }
 
@@ -169,7 +173,7 @@ export default function ProductForm() {
                                     getOptionLabel={(obj: any) => obj.name}
                                     getOptionValue={(obj: any) => String(obj.id)}
                                 />
-                                <div className="dsc-form-error">{formData.price.message}</div>
+                                <div className="dsc-form-error">{formData.categories.message}</div>
                             </div>
                             <div>
                                 <FormTextArea

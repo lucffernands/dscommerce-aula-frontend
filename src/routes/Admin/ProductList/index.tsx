@@ -114,6 +114,7 @@ export default function ProductListing() {
                             <th className="dsc-txt-left">Nome</th>
                             <th></th>
                             <th></th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -124,7 +125,6 @@ export default function ProductListing() {
                                     <td><img className="dsc-product-listing-image" src={product.imgUrl} alt={product.name} /></td>
                                     <td className="dsc-tb768">R$ {product.price.toFixed(2)}</td>
                                     <td className="dsc-txt-left">{product.name}</td>
-                                    <td><img className="dsc-product-listing-btn" src={editIcon} alt={product.name} /></td>
                                     <td><img onClick={() => handleUpdateClick(product.id)} className="dsc-product-listing-btn" src={editIcon} alt={product.name} /></td>
                                     <td><img onClick={() => handleDeleteClick(product.id)} className="dsc-product-listing-btn" src={deleteIcon} alt={product.name} /></td>
                                 </tr>

@@ -1,5 +1,5 @@
 import './styles.css';
-import { Link, useParams } from 'react-router-dom';
+import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import FormInput from '../../../components/FormInput';
 import * as forms from '../../../utils/forms';
@@ -12,9 +12,11 @@ import * as selectStyles from '../../../utils/select';
 
 export default function ProductForm() {
 
+    const navigate = useNavigate();
+
     const params = useParams();
 
-    const isEiting = params.productId !== 'create';
+    const isEditing = params.productId !== 'create';
 
     const [categories, setCategories] = useState<CategoryDTO[]>([]);
 
@@ -79,7 +81,7 @@ export default function ProductForm() {
     }, []);
 
     useEffect(() => {
-        if (isEiting) {
+        if (isEditing) {
             productService.findById(Number(params.productId))
                 .then(response => {
                     const newFormData = forms.updateAll(formData, response.data);
@@ -88,11 +90,11 @@ export default function ProductForm() {
         }
     }, []);
 
-    function handleInputChange(event: any) { 
+    function handleInputChange(event: any) {
         setFormData(forms.updateAndValidate(formData, event.target.name, event.target.value));
     }
 
-    function handleInputTurnDirty(name: string) {   
+    function handleInputTurnDirty(name: string) {
         setFormData(forms.dirtyAndValidate(formData, name));
     }
 
@@ -104,9 +106,21 @@ export default function ProductForm() {
             setFormData(formDataValidated);
             return;
         }
-    }
 
-    //console.log(forms.toValues(formData));
+        const requestBody = forms.toValues(formData);
+        if (isEditing) {
+            requestBody.id = params.productId;
+        }
+
+        const request = isEditing
+            ? productService.updateRequest(requestBody)
+            : productService.insertRequest(requestBody);
+
+        request
+            .then(() => {
+                navigate("/admin/products");
+            });
+    }
 
     return (
         <main>
